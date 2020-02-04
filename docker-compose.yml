@@ -30,10 +30,12 @@ services:
   lms-custom:
     build:
       context: .
+      dockerfile: ./MoodleWeb.Dockerfile
+      
     ports:
       - "8736:80"
     volumes:
-      - ./lms-data:/var/www/
+      - ./lms-data:/usr/src/nginx/lms/
       - ./moodle-data:/usr/src/moodle-data:rw
 
   admin:
