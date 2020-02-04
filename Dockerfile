@@ -43,9 +43,9 @@ COPY --from=moodle /usr/src/moodle .
 
 # RUN mkdir /var/www/html
 # RUN cd /var/www/html
-# RUN echo "<html><head><title>Test</title></head><body>Test LMS</body></html>" > index.html
+RUN echo "<html><head><title>Test</title></head><body>Test LMS</body></html>" > index.html
 # RUN cat index.html
-
+RUN pwd
 RUN ls -ltra
 
 EXPOSE 80

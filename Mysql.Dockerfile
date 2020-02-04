@@ -1,0 +1,10 @@
+FROM mysql:8.0.17
+
+ENV MYSQL_ROOT_PASSWORD=learning@1
+ENV MYSQL_DATABASE=moodle
+
+COPY setup.sql /docker-entrypoint-initdb.d/
+
+# CMD [mysql GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON moodle.* TO 'root'@'localhost' IDENTIFIED BY 'learning@1']
+
+EXPOSE 3306

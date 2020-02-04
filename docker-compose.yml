@@ -1,21 +1,79 @@
 version: "3.7"
 
-services: 
+services:
+  # lms-db-build:
+  #   build:
+  #     context: .
+  #     dockerfile: Mysql.Dockerfile
+
   lms-database:
-    image: mysql:latest
+    image: mysql:8.0.17
     ports:
-    -  "8734:3306"
+      - "8734:3306"
     environment:
-    - MYSQL_ROOT_PASSWORD=learning@1
-    - MYSQL_DATABASE=learning
+      - MYSQL_ROOT_PASSWORD=learning@1
+      - MYSQL_DATABASE=moodle
+      # - TZ=Europe/London
     restart: always
     volumes:
-    - ./data:/var/lib/mysql
+      - ./data:/var/lib/mysql
+      - ./db-setup/setup.sql:/docker-entrypoint-initdb.d/setup.sql
     command: mysqld --default-authentication-plugin=mysql_native_password
 
   lms-moodle:
     image: moodlehq/moodle-php-apache:7.1
-    ports: 
-    - "8735:80"
+    ports:
+      - "8735:80"
     volumes:
-    - ./lms:${PWD}/var/www/html
+      - ./lms:${PWD}/var/www/html
+
+  lms-custom:
+    build:
+      context: .
+    ports:
+      - "8736:80"
+    volumes:
+      - ./lms-data:/var/www/
+      - ./moodle-data:/usr/src/moodle-data:rw
+
+  admin:
+    image: adminer
+    ports:
+      - "8080:8080"
+# version: "3.7"
+
+# services:
+#   # lms-db-build:
+#   #   build:
+#   #     context: .
+#   #     dockerfile: Mysql.Dockerfile
+
+#   lms-database:
+#     image: mysql:8.0.17
+#     ports:
+#     -  "8734:3306"
+#     environment:
+#     - MYSQL_ROOT_PASSWORD=learning@1
+#     - MYSQL_USER=moodleuser
+#     - MYSQL_DATABASE=moodle
+#     restart: always
+#     volumes:
+#     - ./data:/var/lib/mysql
+#     command: mysqld --default-authentication-plugin=mysql_native_password
+#     # depends_on:
+#     # - lms-db-build
+#   # db-setup:
+#   #   image: alpine/git
+
+#   # lms-moodle:
+#   #   image: moodlehq/moodle-php-apache:7.1
+#   #   ports:
+#   #   - "8735:80"
+#   #   volumes:
+#   #   - ./lms:${PWD}/var/www/html
+
+# # docker rm -f $(docker ps -aq) | docker image rm -f $(docker image ls -aq) | docker volume prune -y
+
+# # docker build -t lms .
+
+# # docker run -d --name lms1 -p 9024:80 lms
