@@ -6,6 +6,8 @@ services:
       build: 
         context: .
         dockerfile: ./PHP.Dockerfile
+      volumes: 
+      - ./custom-php-nginx-configs/php-data/:/var/www
 
   nginx-with-php:
     build: 

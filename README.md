@@ -21,3 +21,9 @@ Docker commands that are useful:
     ```docker-compose up --build```
 
 To open the website [http://localhost:8735](http://localhost:8735)
+
+
+Note on php usage:
+```
+We need to map the directory/ies with PHP in both NGINX & the upsream php-fpm module per https://x-team.com/blog/docker-compose-php-environment-from-scratch/ &  https://gitlab.com/x-team-blog/docker-compose-php/-/blob/master/docker/docker-compose.yml
+```
