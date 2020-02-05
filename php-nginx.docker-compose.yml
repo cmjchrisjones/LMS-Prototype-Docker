@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+
+  php-fpm:
+      build: 
+        context: .
+        dockerfile: ./PHP.Dockerfile
+
+  nginx-with-php:
+    build: 
+      context: .
+      dockerfile: ./Nginx.Dockerfile
+    volumes:
+      # - ../custom-php-nginx-configs/php-data:/var/www
+      # - ../custom-php-nginx-configs/nginx/nginx.conf:/etc/nginx/sites-available
+      # - ../custom-php-nginx-configs/nginx/conf.d/:/etc/nginx/conf.d
+      - ./custom-php-nginx-configs/php-data/:/var/www
+      - ./custom-php-nginx-configs/nginx.conf:/etc/nginx/nginx.conf
+      - ./custom-php-nginx-configs/sites/:/etc/nginx/sites-available
+      - ./custom-php-nginx-configs/conf.d/:/etc/nginx/conf.d
+    depends_on: 
+      - php-fpm
+    ports: 
+      - 6732:80
+      - 6733:443
